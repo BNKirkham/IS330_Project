@@ -24,9 +24,9 @@ VALUES ('M,T,Th,F', '9:05am', '3:40pm', '2023-9-8', '2023-10-20', 'School'),
 	   ('M,T,W,Th', '1:00pm', '1:50pm', '2023-9-18', '2023-11-16', 'IS 330');
 
 INSERT INTO Connections (PersonID, TaskID, MeetingID, EventID)
-VALUES (0, 0, null, null),
-	   (0, null, null, 2),
-	   (1, null, 0, null),
-	   (1, null, null, 0),
-	   (2, null, null, 1);
+VALUES (1, 1, null, null),
+	   (1, null, null, 3),
+	   (2, null, 1, null),
+	   (2, null, null, 1),
+	   (1, null, null, 2);
 

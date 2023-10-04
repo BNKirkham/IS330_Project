@@ -7,9 +7,9 @@ SELECT FirstName, LastName, Color FROM People;
 SELECT FirstName, LastName, TeamName, Color 
 FROM People
     INNER JOIN TeamConnections
-        ON People.PersonID = TeamConnections.EntryID
+        ON People.PersonID = TeamConnections.PersonID
     INNER JOIN Teams
-        ON TeamConnections.EntryID = Teams.TeamID;
+        ON TeamConnections.TeamID = Teams.TeamID;
 
 /*Inserting a row into a table using INSERT*/
 INSERT INTO People (FirstName, LastName, Color, Username, PasswordHash)
@@ -22,4 +22,8 @@ WHERE TagID = 5;
 
 /*Deleting a row using DELETE*/
 DELETE FROM Teams
-WHERE TeamID = 0;
+WHERE TeamID = 2;
+
+SELECT * FROM People;
+SELECT * FROM Connections;
+SELECT * FROM Teams;
