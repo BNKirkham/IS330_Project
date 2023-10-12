@@ -6,6 +6,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $LastName = $_POST["LastName"];
     $Username = $_POST["Username"];
     $PasswordHash = $_POST["PasswordHash"];
+//  $PasswordHash = PasswordHash($_POST["PasswordHash"], PASSWORD_DEFAULT); 
     $Color = $_POST["Color"];
 
     // Perform data validation here (e.g., length checks, input sanitization)
@@ -26,15 +27,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sql = "INSERT INTO People (FirstName, LastName, Color, Username, PasswordHash)
     VALUES ('$FirstName', '$LastName', '$Color', '$Username', '$PasswordHash')";
 
-    if ($db->query($sql) === TRUE) {
+    if ($db->query($sql) != FALSE) {
         echo "Data inserted successfully!";
     } else {
         echo "An error has occurred";
     }
 
-    // Close the database connection
-   // $db->close();
 } else {
     echo "Form not submitted.";
 }
 ?>
+
+<script>
+        // Use JavaScript to delay and redirection
+    setTimeout(function() {
+        window.location.href = 'index.php';
+    }, 5000); 
+</script>
