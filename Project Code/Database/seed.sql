@@ -6,6 +6,7 @@ VALUES ('Kirkham', 'Family'),
 
 INSERT INTO People (FirstName, LastName, Color, Username, PasswordHash)
 VALUES ('Brittany', 'Kirkham', 'Green', 'BKirkham', '123'),
+	   ('Geoffrey', 'Kirkham', 'Blue', 'GKirkham', 'abc123'),
 	   ('Lily','Kirkham', 'Pink', 'LKirkham', 'ABC');
 
 INSERT INTO TeamConnections (TeamID, PersonID)
@@ -30,3 +31,4 @@ VALUES (1, 1, null, null),
 	   (2, null, null, 1),
 	   (1, null, null, 2);
 
+SELECT * FROM People;

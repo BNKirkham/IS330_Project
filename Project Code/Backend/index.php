@@ -28,7 +28,7 @@ Hello, <br><br>
     }
     ?>
 
-    <h1>Add Data to Database</h1>
+    <h1>Add User to Database</h1>
     <form action="process_form.php" method="post">
         <label for="FirstName">First Name:</label>
         <input type="text" name="FirstName" id="FirstName" required><br><br>
