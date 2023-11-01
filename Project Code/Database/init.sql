@@ -21,7 +21,8 @@ CREATE TABLE People (
     LastName VARCHAR(55),
     Color VARCHAR(55),
     UserName VARCHAR(15),
-    PasswordHash VARCHAR(25)
+    PasswordHash VARCHAR(255),
+    Administrator BOOLEAN
 );
 
 CREATE TABLE TeamConnections (

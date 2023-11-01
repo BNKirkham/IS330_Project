@@ -1,17 +1,26 @@
 USE todos;
 
 INSERT INTO Teams (TeamName, Description)
-VALUES ('Kirkham', 'Family'),
-	   ('Smith', 'Family');
+VALUES ('Kirkham 3.0', 'Family'),
+	   ('Kirkham 2.0', 'Family');
 
-INSERT INTO People (FirstName, LastName, Color, Username, PasswordHash)
-VALUES ('Brittany', 'Kirkham', 'Green', 'BKirkham', '123'),
-	   ('Geoffrey', 'Kirkham', 'Blue', 'GKirkham', 'abc123'),
-	   ('Lily','Kirkham', 'Pink', 'LKirkham', 'ABC');
+INSERT INTO People (FirstName, LastName, Color, Username, PasswordHash, Administrator)
+VALUES ('Brittany', 'Kirkham', 'Green', 'BKirkham', '$2y$10$ufyXaFan.Q50je6dQSATc.S6/naHM7jlwaMWyzdo9FCxd143iIzxW', 'true'),
+	   ('Geoffrey', 'Kirkham', 'Blue', 'GKirkham', '$2y$10$ufyXaFan.Q50je6dQSATc.S6/naHM7jlwaMWyzdo9FCxd143iIzxW', 'false'),
+	   ('Lily','Kirkham', 'Pink', 'null', 'null', 'false'),
+       ('Laura', 'Kirkham', 'Orange', 'LKirkham', '$2y$10$ufyXaFan.Q50je6dQSATc.S6/naHM7jlwaMWyzdo9FCxd143iIzxW', 'false'),
+       ('Mike', 'Kirkham', 'Blue', 'MKirkham', '$2y$10$ufyXaFan.Q50je6dQSATc.S6/naHM7jlwaMWyzdo9FCxd143iIzxW', 'false'),
+       ('Addie','Kirkham', 'Pink', 'null', 'null', 'false'),
+       ('Nick','Kirkham', 'Red', 'null', 'null', 'false');
 
 INSERT INTO TeamConnections (TeamID, PersonID)
 VALUES (1, 1),
-	   (1, 2);
+	   (1, 2),
+       (1, 3),
+       (2, 4),
+       (2, 5),
+       (2, 6),
+       (2, 7);
 
 INSERT INTO Tasks (DueBy, Completed, Description)
 VALUES ('2023-9-30', false, 'Couch warranty');
@@ -32,3 +41,4 @@ VALUES (1, 1, null, null),
 	   (1, null, null, 2);
 
 SELECT * FROM People;
+SELECT * FROM TeamConnections;
