@@ -1,52 +1,74 @@
-Hello, <br><br>
-
 <?php
-    $dsn = 'mysql:host=localhost;dbname=todos';
-    $username = 'root';
-    $password = '';
+session_start();
+require_once('model/database.php');
+require_once('model/admin_db.php');
 
-    try {
-        $db = new PDO($dsn, $username, $password);
-    } catch (PDOException $e) {
-        echo "There was an error";
-        exit();
+$action = filter_input(INPUT_POST, 'action');
+
+if ($action == NULL) {
+    $action = filter_input(INPUT_GET, 'action');
+    if ($action == NULL) {
+        $action = 'show_admin_menu';
     }
+}
 
-    // Prepare the SQL statement for execution
+if (!isset($_SESSION['is_valid_admin'])) {
+    $action = 'login';
+}
 
-    $stmt = $db->prepare("SELECT * FROM People");
+switch($action) {
+    case 'login':
+        $username = filter_input(INPUT_POST, 'username');
+        $password = filter_input(INPUT_POST, 'password');
+        if (is_valid_admin_login($username, $password)) {
+            $_SESSION['is_valid_admin'] = true;
+            $_SESSION['currently_logged_in_user_username'] = $username;
 
-    // Execute the prepared statement
-
-    $stmt->execute();
-
-    // Fetch all of the remaining rows in the result set and display them
-
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        echo "<span style='color: 'black''>Name & Color: </span>
-            <span style='color: ".$row['Color']."'>" . $row['FirstName'] . " " . $row['LastName'] . "</span><br>";
-    }
-    ?>
-
-    <h1>Add User to Database</h1>
-    <form action="process_form.php" method="post">
-        <label for="FirstName">First Name:</label>
-        <input type="text" name="FirstName" id="FirstName" required><br><br>
-
-        <label for="LastName">Last Name:</label>
-        <input type="text" name="LastName" id="LastName" required><br><br>
-
-        <label for="Username">Username:</label>
-        <input type="text" name="Username" id="Username" required><br><br>
-
-        <label for="PasswordHash">Password:</label>
-        <input type="password" name="PasswordHash" id="PasswordHash" required><br><br>
-
-        <label for="Color">Favorite Color:</label>
-        <input type="text" name="Color" id="Color"><br><br>
-
-        <input type="submit" value="Submit">
-    </form>
+            //Pull People and TeamConnections tables from DB using username
+            $stmt = $db->prepare("SELECT * FROM People JOIN TeamConnections ON People.PersonID = TeamConnections.PersonID WHERE Username = :username"); 
+            $stmt->bindParam(":username", $username);
+            $stmt->execute();
+            //Store userID, admin, and teamID in SESSION
+            $row = $stmt->fetch();
+            $user_id = $row["PersonID"];
+            $_SESSION['currently_logged_in_user_id'] = $user_id;
+            $admin = $row["Administrator"];
+            $_SESSION['current_user_admin'] = $admin;
+            $teamID = $row["TeamID"];
+            $_SESSION['current_user_team_id'] = $teamID;
+            //Pull teamName from DB using teamID
+            $stmt = $db->prepare("SELECT * FROM Teams WHERE TeamID = :teamID");
+            $stmt->bindParam(':teamID', $teamID);
+            $stmt->execute();
+            //Store teamName in SESSION
+            $row = $stmt->fetch();
+            $teamName = $row["TeamName"];
+            $_SESSION['current_user_team_name'] = $teamName;
 
 
-<br>It Worked!!!
+            include('view/admin_menu.php');
+        } else {
+            $login_message = 'You must login to view this page.';
+            include('view/login.php');
+        }
+        break;
+    case 'show_admin_menu':
+        include('view/admin_menu.php');
+        break; 
+    case 'show_to_do':
+        include("view/to_do.php");
+        break;
+    case 'show_calendar':
+        include('view/calendar.php');
+        break;
+    case 'logout':
+        $_SESSION = array();  
+        session_destroy();    
+        $login_message = 'You have been logged out.';
+        include('view/login.php');
+        break;
+    case 'show_admin_page':
+        include('view/admin_page.php');
+        break;
+}
+?>

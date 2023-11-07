@@ -5,13 +5,13 @@ VALUES ('Kirkham 3.0', 'Family'),
 	   ('Kirkham 2.0', 'Family');
 
 INSERT INTO People (FirstName, LastName, Color, Username, PasswordHash, Administrator)
-VALUES ('Brittany', 'Kirkham', 'Green', 'BKirkham', '$2y$10$ufyXaFan.Q50je6dQSATc.S6/naHM7jlwaMWyzdo9FCxd143iIzxW', 'true'),
-	   ('Geoffrey', 'Kirkham', 'Blue', 'GKirkham', '$2y$10$ufyXaFan.Q50je6dQSATc.S6/naHM7jlwaMWyzdo9FCxd143iIzxW', 'false'),
-	   ('Lily','Kirkham', 'Pink', 'null', 'null', 'false'),
-       ('Laura', 'Kirkham', 'Orange', 'LKirkham', '$2y$10$ufyXaFan.Q50je6dQSATc.S6/naHM7jlwaMWyzdo9FCxd143iIzxW', 'false'),
-       ('Mike', 'Kirkham', 'Blue', 'MKirkham', '$2y$10$ufyXaFan.Q50je6dQSATc.S6/naHM7jlwaMWyzdo9FCxd143iIzxW', 'false'),
-       ('Addie','Kirkham', 'Pink', 'null', 'null', 'false'),
-       ('Nick','Kirkham', 'Red', 'null', 'null', 'false');
+VALUES ('Brittany', 'Kirkham', 'Green', 'BKirkham', '$2y$10$ufyXaFan.Q50je6dQSATc.S6/naHM7jlwaMWyzdo9FCxd143iIzxW', '1'),
+	   ('Geoffrey', 'Kirkham', 'Blue', 'GKirkham', '$2y$10$ufyXaFan.Q50je6dQSATc.S6/naHM7jlwaMWyzdo9FCxd143iIzxW', '0'),
+	   ('Lily','Kirkham', 'Pink', 'null', 'null', '0'),
+       ('Laura', 'Kirkham', 'Orange', 'LKirkham', '$2y$10$ufyXaFan.Q50je6dQSATc.S6/naHM7jlwaMWyzdo9FCxd143iIzxW', '0'),
+       ('Mike', 'Kirkham', 'Blue', 'MKirkham', '$2y$10$ufyXaFan.Q50je6dQSATc.S6/naHM7jlwaMWyzdo9FCxd143iIzxW', '0'),
+       ('Addie','Kirkham', 'Pink', 'null', 'null', '0'),
+       ('Nick','Kirkham', 'Red', 'null', 'null', '0');
 
 INSERT INTO TeamConnections (TeamID, PersonID)
 VALUES (1, 1),
@@ -23,7 +23,7 @@ VALUES (1, 1),
        (2, 7);
 
 INSERT INTO Tasks (DueBy, Completed, Description)
-VALUES ('2023-9-30', false, 'Couch warranty');
+VALUES ('2023-9-30', '0', 'Couch warranty');
 
 INSERT INTO Meetings (Date, Description)
 VALUES ('2023-9-23', 'Karate Orientation');
@@ -40,5 +40,4 @@ VALUES (1, 1, null, null),
 	   (2, null, null, 1),
 	   (1, null, null, 2);
 
-SELECT * FROM People;
-SELECT * FROM TeamConnections;
+SELECT * FROM Tasks;
