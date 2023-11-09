@@ -61,10 +61,10 @@
         </header>
         <div class="container">
             <div class="container">
-                <h1>Create a New Team</h2>
+                <h1 style= "Text-align: center">Create a New Team</h1></br>
                 <form method="post">
                     <label for="teamname">Team Name:</label>
-                    <input type="text" id="teamname" name="teamname" required></br>
+                    <input type="text" id="teamname" name="teamname" required></br></br>
 
                     <label for="detail">Team Type:</label>
                     <select id="detail" name="detail" required>
@@ -72,19 +72,19 @@
                         <option value="Class">School Class</option>
                         <option value="Workgroup">Work Group</option>
                         <option value="Other">Other</option>
-                    </select></br>
+                    </select></br></br>
                 
                     <input type="submit" name="submit" value="Submit">
                 </form> 
             </div> 
             <div class="container">
-                <h1>Add A New User</h2>
+                <h1 style= "Text-align: center">Add A New User</h1></br>
                 <form method="post">
                     <label for="firstname">First Name:</label>
-                    <input type="text" id="firstname" name="firstname" required></br>
+                    <input type="text" id="firstname" name="firstname" required></br></br>
 
                     <label for="lastname">Last Name:</label>
-                    <input type="text" id="lastname" name="lastname" required></br>
+                    <input type="text" id="lastname" name="lastname" required></br></br>
 
                     <label for="color">Assigned Color:</label>
                     <select id="color" name="color" required>
@@ -99,19 +99,19 @@
                         <option style="color:Maroon" value="Maroon">Maroon</option>
                         <option style="color:Navy" value="Navy">Navy</option>
                         <option style="color:Olive" value="Olive">Olive</option>
-                    </select></br>
+                    </select></br></br>
 
                     <label for="username">User Name:</label>
-                    <input type="text" id="username" name="username" required></br>
+                    <input type="text" id="username" name="username" required></br></br>
 
                     <label for="password">Password:</label>
-                    <input type="password" id="password" name="password" required></br>
+                    <input type="password" id="password" name="password" required></br></br>
 
                     <label for="admin">Are they an admin?</label>
                     <select id="admin" name="admin" required>
                         <option value="1">Yes</option>
                         <option value="0">No</option>
-                    </select></br>
+                    </select></br></br>
 
                     <label for="team">Assigned Team:</label>
                     <select id="team" name="team" required>
@@ -120,10 +120,11 @@
                             $stmt = $db->query($query);
                             $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             foreach ($data as $row) {
-                                echo "<option value='{$row['TeamID']}'>{$row['TeamName']}</option>";
+                                $sanitizedTeamName = htmlspecialchars($row['TeamName']);
+                                echo "<option value='{$row['TeamID']}'>{$sanitizedTeamName}</option>";
                             }
                         ?>
-                    </select></br>
+                    </select></br></br>
                 
                     <input type="submit" name="submit2" value="Submit">
                 </form> 
