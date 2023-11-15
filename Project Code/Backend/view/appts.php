@@ -35,7 +35,7 @@
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $tasks = [];
         foreach ($data as $row) {
-            $stmt2 = $db->query("SELECT DueBy, Completed, Description, FirstName, Color FROM Tasks JOIN Connections ON Tasks.TaskID = Connections.TaskID JOIN People ON Connections.PersonID = People.PersonID WHERE Connections.PersonID =" . $row['PersonID']." ORDER BY DueBy" );
+            $stmt2 = $db->query("SELECT DueBy, Completed, Description FROM Tasks JOIN Connections ON Tasks.TaskID = Connections.TaskID WHERE Connections.PersonID =" . $row['PersonID']);
             $tasks = array_merge($tasks, $stmt2->fetchAll(PDO::FETCH_ASSOC));
         }
     } else {
@@ -60,20 +60,14 @@
                 <h1>Team Tasks</h1>
                 <table>
                     <tr>
-                        <th> </th>
                         <th>Due By:</th>
                         <th>Task Description:</th>
-                        <th>Person Assigned:</th>
                         <th>Task Completed:</th>
                     </tr>
                     <?php foreach ($tasks as $task): ?>
-                        <tr>         
-                            <td>
-                                <div class="color-box" style="background-color: <?php echo $task['Color']; ?>"></div>
-                            </td>               
+                        <tr>
                             <td><?php echo htmlspecialchars($task['DueBy']); ?></td>
                             <td><?php echo htmlspecialchars($task['Description']); ?></td>
-                            <td><?php echo htmlspecialchars($task['FirstName']); ?></td>
                             <td><?php echo htmlspecialchars($task['Completed']?"True":"False"); ?></td>
                         </tr>
                     <?php endforeach; ?>
@@ -109,7 +103,7 @@
                         <option value="0">No</option>
                     </select></br></br>
                 
-                    <input type="submit" name="submit" value="Submit">
+                    <input type="submit" name="submit" value="Submit"></br>
                 </form> 
             </div>
         </div>

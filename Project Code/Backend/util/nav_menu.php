@@ -3,7 +3,7 @@
     if($admin == 1){
         echo "<div style='Text-align:center'>
         <a href='index.php?action=show_admin_page'>Admin Only</a>
-        </div>";
+        </div></br>";
     }
 ?>
 <header>
@@ -11,8 +11,10 @@
     <nav class="horizontal">
 		<ul>
 			<li><a href="index.php?action=show_admin_menu">Home</a></li>
+            <li><a href="index.php?action=show_calendar">Calendar</a></li>
 			<li><a href="index.php?action=show_to_do">To Do List</a></li>
-			<li><a href="index.php?action=show_calendar">Calendar</a></li>
+            <li><a href="index.php?action=show_appts">Appts</a></li>
+            <li><a href="index.php?action=show_events">Ongoing Events</a></li>
 			<li><a href="index.php?action=logout">Logout</a></li>
 		</ul>
 	</nav>

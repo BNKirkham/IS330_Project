@@ -55,11 +55,17 @@ switch($action) {
     case 'show_admin_menu':
         include('view/admin_menu.php');
         break; 
+    case 'show_calendar':
+        include('view/calendar.php');
+        break;
     case 'show_to_do':
         include("view/to_do.php");
         break;
-    case 'show_calendar':
-        include('view/calendar.php');
+    case 'show_appts':
+        include('view/appts.php');
+        break;
+    case 'show_events':
+        include('view/events.php');
         break;
     case 'logout':
         $_SESSION = array();  
