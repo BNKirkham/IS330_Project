@@ -4,28 +4,28 @@
 
     if (isset($_POST['submit'])) {   
         $name = $_POST['name'];
-        $duedate = $_POST['duedate'];
+        $date = $_POST['date'];
+        $time = $_POST['time'];
         $person = $_POST['person'];
-        $complete = $_POST['complete'];
 
-        $stmt = $db->prepare("INSERT INTO Tasks (DueBy, Completed, Description) VALUES (:duedate, :complete, :name)");
+        $stmt = $db->prepare("INSERT INTO Meetings (Date, Time, Description) VALUES (:date, :time, :name)");
 
         $stmt->bindParam(':name', $name);
-        $stmt->bindParam(':duedate', $duedate);
-        $stmt->bindParam(':complete', $complete);
+        $stmt->bindParam(':date', $date); 
+        $stmt->bindParam(':time', $time);
 
         $stmt->execute();
 
-        $taskID = $db->lastInsertId();
+        $meetingID = $db->lastInsertId();
 
-        $stmt = $db->prepare("INSERT INTO Connections (PersonID, TaskID) VALUES (:person, :taskID)");
+        $stmt = $db->prepare("INSERT INTO Connections (PersonID, MeetingID) VALUES (:person, :meetingID)");
 
         $stmt->bindParam(':person', $person);
-        $stmt->bindParam(':taskID', $taskID);
+        $stmt->bindParam(':meetingID', $meetingID);
 
         $stmt->execute();
 
-        echo "You added a task successfully";
+        echo "You added an appointment successfully";
     }
     
     if(isset($_SESSION['current_user_team_id'])) {
@@ -35,7 +35,7 @@
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $tasks = [];
         foreach ($data as $row) {
-            $stmt2 = $db->query("SELECT DueBy, Completed, Description FROM Tasks JOIN Connections ON Tasks.TaskID = Connections.TaskID WHERE Connections.PersonID =" . $row['PersonID']);
+            $stmt2 = $db->query("SELECT DATE_FORMAT(Date, '%m/%d') AS formatted_date, DATE_FORMAT(Time, '%h:%i %p') AS formatted_time, Description, FirstName, Color FROM Meetings JOIN Connections ON Meetings.MeetingID = Connections.MeetingID JOIN People ON Connections.PersonID = People.PersonID WHERE Connections.PersonID =" . $row['PersonID']." ORDER BY Date" );
             $tasks = array_merge($tasks, $stmt2->fetchAll(PDO::FETCH_ASSOC));
         }
     } else {
@@ -45,7 +45,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>To Do List</title>
+        <title>One-Time Appointments</title>
         <link rel="stylesheet" type="text/css" href="main.css"/>
     </head>
     <body>
@@ -53,34 +53,43 @@
             include("util/nav_menu.php")
         ?>
         <header>
-            <h1>What I have To Do:</h1>
+            <h1>One-Time Appointments:</h1>
         </header>
         <div class="container">
             <div class="container">
-                <h1>Team Tasks</h1>
+                <h1>Team Appointments</h1>
                 <table>
                     <tr>
-                        <th>Due By:</th>
-                        <th>Task Description:</th>
-                        <th>Task Completed:</th>
+                        <th> </th>
+                        <th>Date:</th>
+                        <th>Time:</th>
+                        <th>Appt Description:</th>
+                        <th>Team Member:</th>
                     </tr>
                     <?php foreach ($tasks as $task): ?>
                         <tr>
-                            <td><?php echo htmlspecialchars($task['DueBy']); ?></td>
+                            <td>
+                                <div class="color-box" style="background-color: <?php echo $task['Color']; ?>"></div>
+                            </td>   
+                            <td><?php echo htmlspecialchars($task['formatted_date']); ?></td>
+                            <td><?php echo htmlspecialchars($task['formatted_time']); ?></td>
                             <td><?php echo htmlspecialchars($task['Description']); ?></td>
-                            <td><?php echo htmlspecialchars($task['Completed']?"True":"False"); ?></td>
+                            <td><?php echo htmlspecialchars($task['FirstName']); ?></td>
                         </tr>
                     <?php endforeach; ?>
                 </table>
             </div>
             <div class="container">
-            <h2 style= "Text-align: center">Add A New Task</h2></br>
+            <h2 style= "Text-align: center">Add A New Appointmemt</h2></br>
                 <form method="post">
-                    <label for="name">Task Name:</label>
+                    <label for="name">Appt Description:</label>
                     <input type="text" id="name" name="name" required></br></br>
 
-                    <label for="duedate">Due Date:</label>
-                    <input type="date" id="duedate" name="duedate" required></br></br>
+                    <label for="date">Date:</label>
+                    <input type="date" id="date" name="date" required></br></br>
+                    
+                    <label for="time">Time:</label>
+                    <input type="time" id="time" name="time" required></br></br>
 
                     <label for="person">Assigned Person:</label>
                     <select id="person" name="person" required>
@@ -95,12 +104,6 @@
                                 echo "<option style='color:{$row['Color']}' value='{$row['PersonID']}'>{$sanitizedFirstName}</option>";
                             } 
                         ?> 
-                    </select></br></br>
-
-                    <label for="complete">Has this been completed?</label>
-                    <select id="complete" name="complete" required>
-                        <option value="1">Yes</option>
-                        <option value="0">No</option>
                     </select></br></br>
                 
                     <input type="submit" name="submit" value="Submit"></br>

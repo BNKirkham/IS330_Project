@@ -16,5 +16,7 @@
             <h1>Monthly Calendar:</h1>
         </header>
         Calendar goes here....
+
+        *Stretch Goal*
     </body>
 </html>

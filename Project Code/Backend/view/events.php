@@ -4,28 +4,34 @@
 
     if (isset($_POST['submit'])) {   
         $name = $_POST['name'];
-        $duedate = $_POST['duedate'];
+        $days = $_POST['days'];
+        $timestart = $_POST['timestart'];
+        $timeend = $_POST['timeend'];
+        $startdate = $_POST['startdate'];
+        $enddate = $_POST['enddate'];
         $person = $_POST['person'];
-        $complete = $_POST['complete'];
 
-        $stmt = $db->prepare("INSERT INTO Tasks (DueBy, Completed, Description) VALUES (:duedate, :complete, :name)");
+        $stmt = $db->prepare("INSERT INTO Events (WeekDay, TimeStart, TimeEnd, StartDate, EndDate, Description) VALUES (:days, :timestart, :timeend, :startdate, :enddate, :name)");
 
         $stmt->bindParam(':name', $name);
-        $stmt->bindParam(':duedate', $duedate);
-        $stmt->bindParam(':complete', $complete);
+        $stmt->bindParam(':days', $days);
+        $stmt->bindParam(':timestart', $timestart);
+        $stmt->bindParam(':timeend', $timeend);
+        $stmt->bindParam(':startdate', $startdate);
+        $stmt->bindParam(':enddate', $enddate);
 
         $stmt->execute();
 
-        $taskID = $db->lastInsertId();
+        $eventID = $db->lastInsertId();
 
-        $stmt = $db->prepare("INSERT INTO Connections (PersonID, TaskID) VALUES (:person, :taskID)");
+        $stmt = $db->prepare("INSERT INTO Connections (PersonID, EventID) VALUES (:person, :eventID)");
 
         $stmt->bindParam(':person', $person);
-        $stmt->bindParam(':taskID', $taskID);
+        $stmt->bindParam(':eventID', $eventID);
 
         $stmt->execute();
 
-        echo "You added a task successfully";
+        echo "You added an event successfully";
     }
     
     if(isset($_SESSION['current_user_team_id'])) {
@@ -35,7 +41,7 @@
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $tasks = [];
         foreach ($data as $row) {
-            $stmt2 = $db->query("SELECT WeekDay, TimeStart, TimeEnd, StartDate, EndDate, Description FROM Events JOIN Connections ON Events.EventID = Connections.EventID WHERE Connections.PersonID =" . $row['PersonID']);
+            $stmt2 = $db->query("SELECT WeekDay, DATE_FORMAT(TimeStart, '%h:%i %p') AS formatted_starttime, DATE_FORMAT(TimeEnd, '%h:%i %p') AS formatted_endtime, DATE_FORMAT(StartDate, '%m/%d') AS formatted_startdate, DATE_FORMAT(EndDate, '%m/%d') AS formatted_enddate, Description, FirstName, Color FROM Events JOIN Connections ON Events.EventID = Connections.EventID JOIN People ON Connections.PersonID = People.PersonID  WHERE Connections.PersonID =" . $row['PersonID']." ORDER BY WeekDay");
             $tasks = array_merge($tasks, $stmt2->fetchAll(PDO::FETCH_ASSOC));
         }
     } else {
@@ -60,6 +66,7 @@
                 <h1>Events</h1>
                 <table>
                     <tr>
+                        <th> </th>
                         <th>Weekday(s)</th>
                         <th>Time</th>
                         <th>Event Description</th>
@@ -69,21 +76,52 @@
                     </tr>
                     <?php foreach ($tasks as $task): ?>
                         <tr>
+                            <td>
+                                <div class="color-box" style="background-color: <?php echo $task['Color']; ?>"></div>
+                            </td>  
                             <td><?php echo htmlspecialchars($task['WeekDay']); ?></td>
+                            <td><?php echo htmlspecialchars($task['formatted_starttime']) . "-" . htmlspecialchars($task['formatted_endtime']); ?></td>
                             <td><?php echo htmlspecialchars($task['Description']); ?></td>
-                            <td><?php echo htmlspecialchars($task['Completed']?"True":"False"); ?></td>
+                            <td><?php echo htmlspecialchars($task['FirstName']); ?></td>
+                            <td><?php echo htmlspecialchars($task['formatted_startdate']); ?></td>
+                            <td><?php echo htmlspecialchars($task['formatted_enddate']); ?></td>
                         </tr>
                     <?php endforeach; ?>
                 </table>
             </div>
             <div class="container">
-            <h2 style= "Text-align: center">Add A New Task</h2></br>
+            <h2 style= "Text-align: center">Add A New Event</h2></br>
                 <form method="post">
-                    <label for="name">Task Name:</label>
+                    <label for="name">Event Name:</label>
                     <input type="text" id="name" name="name" required></br></br>
 
-                    <label for="duedate">Due Date:</label>
-                    <input type="date" id="duedate" name="duedate" required></br></br>
+                    <label for="days">Assigned Days:</label>
+                    <select id="days" name="days" required>
+                        <option value="Su">Sunday</option>
+                        <option value="M">Monday</option>
+                        <option value="Tu">Tuesday</option>
+                        <option value="W">Wednesday</option>
+                        <option value="Th">Thursday</option>
+                        <option value="F">Friday</option>
+                        <option value="Sa">Saturday</option>
+                        <option value="M,W">Mon & Wed</option>
+                        <option value="Tu,Th">Tues & Thurs</option>
+                        <option value="Sa,Su">Sat & Sun</option>
+                        <option value="M,Tu,Th,F">Mon, Tues, Thurs, & Fri</option>
+                        <option value="M,Tu,W,Th,F">Mon, Tues, Wed, Thurs, & Fri</option>
+                    </select></br></br>
+
+                    <label for="timestart">Time Start:</label>
+                    <input type="time" id="timestart" name="timestart" required></br></br>
+
+                    <label for="timeend">Time End:</label>
+                    <input type="time" id="timeend" name="timeend" required></br></br>
+
+                    <label for="startdate">Start Date:</label>
+                    <input type="date" id="startdate" name="startdate" required></br></br>
+
+                    <label for="enddate">End Date:</label>
+                    <input type="date" id="enddate" name="enddate" required></br></br>
 
                     <label for="person">Assigned Person:</label>
                     <select id="person" name="person" required>
@@ -98,12 +136,6 @@
                                 echo "<option style='color:{$row['Color']}' value='{$row['PersonID']}'>{$sanitizedFirstName}</option>";
                             } 
                         ?> 
-                    </select></br></br>
-
-                    <label for="complete">Has this been completed?</label>
-                    <select id="complete" name="complete" required>
-                        <option value="1">Yes</option>
-                        <option value="0">No</option>
                     </select></br></br>
                 
                     <input type="submit" name="submit" value="Submit"></br>

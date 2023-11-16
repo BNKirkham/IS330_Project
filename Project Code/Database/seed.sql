@@ -25,19 +25,19 @@ VALUES (1, 1),
 INSERT INTO Tasks (DueBy, Completed, Description)
 VALUES ('2023-9-30', '0', 'Couch warranty');
 
-INSERT INTO Meetings (Date, Description)
-VALUES ('2023-9-23', 'Karate Orientation');
+INSERT INTO Meetings (Date, Time, Description)
+VALUES ('2023-9-23', '14:00:00', 'Karate Orientation');
 
 INSERT INTO Events (Weekday, TimeStart, TimeEnd, StartDate, EndDate, Description)
-VALUES ('M,T,Th,F', '9:05am', '3:40pm', '2023-9-8', '2023-10-20', 'School'),
-	   ('W', '9:50am', '3:40pm', '2023-9-13', '2023-10-18', 'School'),
-	   ('M,T,W,Th', '1:00pm', '1:50pm', '2023-9-18', '2023-11-16', 'IS 330');
+VALUES ('M,T,Th,F', '09:05:00', '15:40:00', '2023-9-8', '2023-10-20', 'School'),
+	   ('W', '09:50:00', '15:40:00', '2023-9-13', '2023-10-18', 'School'),
+	   ('M,T,W,Th', '13:00:00', '13:50:00', '2023-9-18', '2023-11-16', 'IS 330');
 
 INSERT INTO Connections (PersonID, TaskID, MeetingID, EventID)
 VALUES (1, 1, null, null),
 	   (1, null, null, 3),
 	   (2, null, 1, null),
-	   (2, null, null, 1),
-	   (1, null, null, 2);
+	   (3, null, null, 1),
+	   (3, null, null, 2);
 
 SELECT * FROM Tasks;

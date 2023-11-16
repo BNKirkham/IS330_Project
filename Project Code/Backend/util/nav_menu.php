@@ -11,7 +11,10 @@
     <nav class="horizontal">
 		<ul>
 			<li><a href="index.php?action=show_admin_menu">Home</a></li>
-            <li><a href="index.php?action=show_calendar">Calendar</a></li>
+
+    <!--    <li><a href="index.php?action=show_calendar">Calendar</a></li>  
+            NOTE: change main.css, line 124, to: grid-template-columns: repeat(6, 1fr);
+    -->
 			<li><a href="index.php?action=show_to_do">To Do List</a></li>
             <li><a href="index.php?action=show_appts">Appts</a></li>
             <li><a href="index.php?action=show_events">Ongoing Events</a></li>

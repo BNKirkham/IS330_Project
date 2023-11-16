@@ -42,7 +42,8 @@ CREATE TABLE Tasks (
 
 CREATE TABLE Meetings (
     MeetingID INT PRIMARY KEY AUTO_INCREMENT,
-    Date DATETIME,
+    Date DATE,
+    Time TIME,
     Description TEXT
 );
 

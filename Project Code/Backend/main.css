@@ -121,7 +121,7 @@ div > table tr:hover {
 }
 header nav ul {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     Text-align: center;
 }
 header nav ul li a {

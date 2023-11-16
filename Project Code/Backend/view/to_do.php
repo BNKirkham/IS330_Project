@@ -35,7 +35,7 @@
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $tasks = [];
         foreach ($data as $row) {
-            $stmt2 = $db->query("SELECT DueBy, Completed, Description, FirstName, Color FROM Tasks JOIN Connections ON Tasks.TaskID = Connections.TaskID JOIN People ON Connections.PersonID = People.PersonID WHERE Connections.PersonID =" . $row['PersonID']." ORDER BY DueBy" );
+            $stmt2 = $db->query("SELECT DATE_FORMAT(DueBy, '%m/%d') AS formatted_date, Completed, Description, FirstName, Color FROM Tasks JOIN Connections ON Tasks.TaskID = Connections.TaskID JOIN People ON Connections.PersonID = People.PersonID WHERE Connections.PersonID =" . $row['PersonID']." ORDER BY DueBy" );
             $tasks = array_merge($tasks, $stmt2->fetchAll(PDO::FETCH_ASSOC));
         }
     } else {
@@ -71,7 +71,7 @@
                             <td>
                                 <div class="color-box" style="background-color: <?php echo $task['Color']; ?>"></div>
                             </td>               
-                            <td><?php echo htmlspecialchars($task['DueBy']); ?></td>
+                            <td><?php echo htmlspecialchars($task['formatted_date']); ?></td>
                             <td><?php echo htmlspecialchars($task['Description']); ?></td>
                             <td><?php echo htmlspecialchars($task['FirstName']); ?></td>
                             <td><?php echo htmlspecialchars($task['Completed']?"True":"False"); ?></td>
