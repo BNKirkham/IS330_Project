@@ -68,3 +68,4 @@ CREATE TABLE Connections (
     FOREIGN KEY (MeetingID) REFERENCES Meetings(MeetingID),
     FOREIGN KEY (EventID) REFERENCES Events(EventID)
 );
+

@@ -26,7 +26,7 @@ INSERT INTO Tasks (DueBy, Completed, Description)
 VALUES ('2023-9-30', '0', 'Couch warranty');
 
 INSERT INTO Meetings (Date, Time, Description)
-VALUES ('2023-9-23', '14:00:00', 'Karate Orientation');
+VALUES ('2023-9-23', '15:00:00', 'Karate Orientation');
 
 INSERT INTO Events (Weekday, TimeStart, TimeEnd, StartDate, EndDate, Description)
 VALUES ('M,T,Th,F', '09:05:00', '15:40:00', '2023-9-8', '2023-10-20', 'School'),
@@ -40,4 +40,4 @@ VALUES (1, 1, null, null),
 	   (3, null, null, 1),
 	   (3, null, null, 2);
 
-SELECT * FROM Tasks;
+SELECT * FROM Meetings;
